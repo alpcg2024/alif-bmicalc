@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BMI Calculator with Health Indication and Calorie Guide</title>
+    <style>
+      
+        /* General Styles */
+        body {
+            font-family: Sans-serif, sans-serif;
+            background: linear-gradient(135deg, #b0e0e6, #4682b4);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            color: #333;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 350px;
+            text-align: center;
+        }
+        .logo-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 15px;
+        }
+        h1 {
+            color: #4682b4;
+            font-size: 2em;
+        }
+        label {
+            font-weight: bold;
+            color: #333;
+        }
+        input[type="number"] {
+            width: 80%;
+            padding: 8px;
+            margin: 5px 0 15px;
+            border: 2px solid #4682b4;
+            border-radius: 8px;
+        }
+        .btn {
+            padding: 10px 20px;
+            background-color: #4682b4;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .btn:hover {
+            background-color: #4169e1;
+        }
+        .result, .bmi-indication, .calorie-suggestion, .food-pyramid {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+        .bmi-category {
+            font-size: 1.2em;
+            color: #4682b4;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="logo-container">
+            <img src="https://i.postimg.cc/4dLs8hVD/download-removebg-preview.png" alt="Logo">
+        </div>
+        <h3><b><i>I am Omar Alif. I read in class 8.
+            I am a software developer. Our school name is Omar Kinder Garten School. This is my project.</i></h3>
+        <h1>ALPCG BMI Calculator</h1>
+
+        <label for="weight">Weight (kg)</label>
+        <input type="number" id="weight" placeholder="Enter your weight" min="1">
+
+        <label for="height">Height (cm)</label>
+        <input type="number" id="height" placeholder="Enter your height" min="1">
+
+        <button class="btn" onclick="calculateBMI()">Calculate BMI</button>
+
+        <div class="result" id="bmiResult"></div>
+        <div class="bmi-category" id="bmiCategory"></div>
+        <div class="bmi-indication" id="bmiIndication"></div>
+        <div class="calorie-suggestion" id="calorieSuggestion"></div>
+        <div class="food-pyramid" id="foodPyramid">
+            <h3>খাদ্য পিরামিড:</h3>
+            <p>প্রতি দিনের খাদ্য গ্রহণের জন্য:</p>
+            <ul>
+                <li>শস্যদানা এবং শস্যজাত খাবার (গম, ভাত, রুটি)</li>
+                <li>ফল ও সবজি</li>
+                <li>প্রোটিন উৎস (ডাল, মসুর, মাংস)</li>
+                <li>দুধ এবং দুগ্ধজাত খাবার</li>
+                <li>সীমিত পরিমাণে চিনি এবং চর্বিজাত খাবার</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function calculateBMI() {
+            const weight = parseFloat(document.getElementById('weight').value);
+            const height = parseFloat(document.getElementById('height').value) / 100; // Convert cm to meters
+            const bmi = weight / (height * height); // Calculate BMI
+            const bmiResult = document.getElementById('bmiResult');
+            const bmiCategory = document.getElementById('bmiCategory');
+            const bmiIndication = document.getElementById('bmiIndication');
+            const calorieSuggestion = document.getElementById('calorieSuggestion');
+
+            if (!weight || !height) {
+                bmiResult.innerHTML = 'Please enter both weight and height';
+                bmiCategory.innerHTML = '';
+                bmiIndication.innerHTML = '';
+                calorieSuggestion.innerHTML = '';
+                return;
+            }
+
+            bmiResult.innerHTML = `Your BMI: ${bmi.toFixed(1)}`;
+            
+            if (bmi < 18.5) {
+                bmiCategory.innerHTML = 'Category: Underweight';
+                bmiIndication.innerHTML = 'Health Status: You are underweight. It might be good to gain some weight for better health.';
+                calorieSuggestion.innerHTML = 'প্রস্তাবিত ক্যালোরি: প্রতিদিন ২০০০ - ২৫০০ ক্যালোরি';
+                calorieSuggestion.style.color = '#1e90ff';
+            } else if (bmi >= 18.5 && bmi < 24.9) {
+                bmiCategory.innerHTML = 'Category: Normal weight';
+                bmiIndication.innerHTML = 'Health Status: Your BMI is good! Maintain a balanced diet and active lifestyle.';
+                calorieSuggestion.innerHTML = 'প্রস্তাবিত ক্যালোরি: প্রতিদিন ১৮০০ - ২২০০ ক্যালোরি';
+                calorieSuggestion.style.color = '#32cd32';
+            } else if (bmi >= 25 && bmi < 29.9) {
+                bmiCategory.innerHTML = 'Category: Overweight';
+                bmiIndication.innerHTML = 'Health Status: You are overweight. Regular exercise and a balanced diet could help you reach a healthier weight.';
+                calorieSuggestion.innerHTML = 'প্রস্তাবিত ক্যালোরি: প্রতিদিন ১৫০০ - ২০০০ ক্যালোরি';
+                calorieSuggestion.style.color = '#ffa500';
+            } else {
+                bmiCategory.innerHTML = 'Category: Obese';
+                bmiIndication.innerHTML = 'Health Status: Your BMI indicates obesity. Consult with a healthcare provider for advice on weight management.';
+                calorieSuggestion.innerHTML = 'প্রস্তাবিত ক্যালোরি: প্রতিদিন ১২০০ - ১৬০০ ক্যালোরি';
+                calorieSuggestion.style.color = '#ff4500';
+            }
+        }
+    </script>
+
+</body>
+</html>
